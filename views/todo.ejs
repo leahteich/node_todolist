@@ -15,9 +15,11 @@ integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7
 <button type="submit"><span class="fas fa-plus"></span></button>
 </form>
 <ul class="todo-list">
+<!-- Jacksonian Concept: Templating -->
+<!-- Below code allows us to generate the todo list items-->
 <% todoTasks.forEach(details => { %>
 <li class="todo-list-item">
-<div class="todo-list-item-name"><%= details.content %></div>
+<div class="todo-list-item-name"><%= details.content %></div> <!-- Jacksonian Concept: Attributes-->
 <a href="/edit/<%= details._id %>" class="edit">
 <span class="fas fa-edit"></span>
 </a>

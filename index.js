@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
+// Allows us to hide secure credentials for the database in a .env file
 const dotenv = require('dotenv');
+// Links us to the mongo database
 const mongoose = require("mongoose");
 
 const TodoTask = require("./models/TodoTask");
@@ -17,30 +19,30 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () => {
     app.listen(3000, () => console.log("Server Up and running"));
 });
 
-
 app.set("view engine", "ejs")
 
-// GET METHOD
+// GET METHOD -- allows us to retrieve todos from the db
 app.get("/", (req, res) => {
     TodoTask.find({}, (err, tasks) => {
     res.render("todo.ejs", { todoTasks: tasks });
     });
     });
     
-//POST METHOD
+//POST METHOD -- allows us to create new todos
 app.post('/',async (req, res) => {
     const todoTask = new TodoTask({
     content: req.body.content
     });
     try {
     await todoTask.save();
+    // Jacksonian Concept: Redirect, ControlFlow, Error Handling
     res.redirect("/");
     } catch (err) {
     res.redirect("/");
     }
     });
     
-//UPDATE
+//UPDATE -- allows us to update todos
 app
 .route("/edit/:id")
 .get((req, res) => {
@@ -52,12 +54,13 @@ app
 .post((req, res) => {
     const id = req.params.id;
     TodoTask.findByIdAndUpdate(id, { content: req.body.content }, err => {
+        // Error handling 
         if (err) return res.send(500, err);
         res.redirect("/");
     });
 });
 
-//DELETE
+//DELETE -- allows us to remove todos 
 app.route("/remove/:id").get((req, res) => {
     const id = req.params.id;
     TodoTask.findByIdAndRemove(id, err => {
