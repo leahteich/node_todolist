@@ -19,11 +19,13 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () => {
     app.listen(3000, () => console.log("Server Up and running"));
 });
 
+// Jacksonian Concept: Templating Engines
 app.set("view engine", "ejs")
 
 // GET METHOD -- allows us to retrieve todos from the db
 app.get("/", (req, res) => {
     TodoTask.find({}, (err, tasks) => {
+    // Jacksonian Concept: Render
     res.render("todo.ejs", { todoTasks: tasks });
     });
     });
@@ -33,9 +35,11 @@ app.post('/',async (req, res) => {
     const todoTask = new TodoTask({
     content: req.body.content
     });
+    // Jacksonian Concept: Error Handling
     try {
+    // Jacksonian Concept: Asynchronous 
     await todoTask.save();
-    // Jacksonian Concept: Redirect, ControlFlow, Error Handling
+    // Jacksonian Concept: Redirect
     res.redirect("/");
     } catch (err) {
     res.redirect("/");
@@ -44,8 +48,10 @@ app.post('/',async (req, res) => {
     
 //UPDATE -- allows us to update todos
 app
+// Jacksonian Concept: Dynamic URLs
 .route("/edit/:id")
 .get((req, res) => {
+    // Jacksonian Concept: Parameter
     const id = req.params.id;
     TodoTask.find({}, (err, tasks) => {
         res.render("todoEdit.ejs", { todoTasks: tasks, idTask: id });
